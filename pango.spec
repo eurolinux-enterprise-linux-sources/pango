@@ -9,7 +9,7 @@
 Summary: System for layout and rendering of internationalized text
 Name: pango
 Version: 1.28.1
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/pango/1.28/pango-%{version}.tar.bz2
@@ -183,10 +183,10 @@ host=`echo $host | sed "s/^s390\(x\)*-redhat/s390\1-ibm/"`
 
 case "$host" in
   alpha*|ia64*|powerpc64*|s390x*|sparc64*|x86_64*)
-   %{_bindir}/pango-querymodules-64 > %{_sysconfdir}/pango/$host/pango.modules
+   %{_bindir}/pango-querymodules-64 > %{_sysconfdir}/pango/$host/pango.modules || :
    ;;
   *)
-   %{_bindir}/pango-querymodules-32 > %{_sysconfdir}/pango/$host/pango.modules
+   %{_bindir}/pango-querymodules-32 > %{_sysconfdir}/pango/$host/pango.modules || :
    ;;
 esac
 
@@ -248,6 +248,9 @@ fi
 
 
 %changelog
+* Thu Jan  7 2016 Akira TAGOH <tagoh@redhat.com> - 1.28.1-11
+- Get rid of the trivial error messages during running %%post script. (#895383)
+
 * Wed Apr 23 2014 Akira TAGOH <tagoh@redhat.com> - 1.28.1-10
 - Avoid the error message at %%postun on upgrading to rhel7. (#1086690)
 - Use correct rpm macro for man page (#885846)

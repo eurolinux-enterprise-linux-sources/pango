@@ -9,7 +9,7 @@
 Summary: System for layout and rendering of internationalized text
 Name: pango
 Version: 1.28.1
-Release: 3%{?dist}.5
+Release: 7%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/pango/1.28/pango-%{version}.tar.bz2
@@ -46,6 +46,10 @@ Patch1: pangoft2-box-alloc.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2011-0064
 Patch2: pango-hb_buffer_ensure-realloc.patch
 Patch3: pango-hb_buffer_enlarge-overflow.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=616397
+# https://bugzilla.redhat.com/show_bug.cgi?id=878772
+Patch4: pango-1.28.1-zero-width-ft2.patch
 
 %description
 Pango is a library for laying out and rendering of text, with an emphasis
@@ -84,6 +88,7 @@ for the pango package.
 %patch1 -p1 -b .box-alloc
 %patch2 -p1 -b .hb_buffer-realloc
 %patch3 -p1 -b .hb_buffer-enlarge
+%patch4 -p1 -b .zero-width-ft2
 
 %build
 
@@ -242,23 +247,29 @@ fi
 
 
 %changelog
-* Mon Feb 28 2011 Matthias Clasen <mclasen@redhat.com> - 1.28.1-3.el6_0.5
+* Tue Nov 20 2012 Cosimo Cecchi <cosimoc@redhat.com> - 1.28.1-9
+- Fix a regression in the pangoft2 module
+Resolves: #878772
+
+* Mon Feb 28 2011 Matthias Clasen <mclasen@redhat.com> - 1.28.1-8
 - Prevent an integer overflow in hb_buffer_ensure()
-Related: #679693
+Related: #679694
 
-* Sat Feb 26 2011 Tomas Hoger <thoger@redhat.com> - 1.28.1-3.el6_0.4
-- Check for realloc failures in hb_buffer_ensure() (CVE-2011-0064)
+* Mon Feb 28 2011 Matthias Clasen <mclasen@redhat.com> - 1.28.1-7
+- Use -f-no-strict-aliasing for C++, too
+- Escape macros in %%changelog
+Related: #679694
 
-* Wed Jan 26 2011 Matthias Clasen <mclasen@redhat.com> - 1.28.1-3.el6_0.3
+* Sun Feb 27 2011 Matthias Clasen <mclasen@redhat.com> - 1.28.1-6
+- Properly handle allocation failure in harfbuzz
+Resolves: #679694
+
+* Wed Jan 26 2011 Matthias Clasen <mclasen@redhat.com> - 1.28.1-5
 - Fix a division by zero found in testing
 
-* Mon Jan 24 2011 Matthias Clasen <mclasen@redhat.com> - 1.28.1-3.el6_0.2
-- Use -fno-strict-aliasing for C++, too
-- Escape macros in %%changelog
-
-* Mon Jan 24 2011 Matthias Clasen <mclasen@redhat.com> - 1.28.1-3.el6_0.1
+* Mon Jan 24 2011 Matthias Clasen <mclasen@redhat.com> - 1.28.1-4
 - Prevent heap corruption with malformed fonts. (CVE-2011-0020)
-- Resolves: #671529
+- Resolves: #671530
 
 * Fri Jun 25 2010 Matthias Clasen <mclasen@redhat.com> - 1.28.1-3
 - Fix up requires

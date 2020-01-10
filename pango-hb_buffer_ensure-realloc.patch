@@ -1,20 +1,10 @@
-From 3104961bc0ffaf847d2a1e116e6de4fdc1cd8ada Mon Sep 17 00:00:00 2001
-From: Behdad Esfahbod <behdad@behdad.org>
-Date: Thu, 2 Dec 2010 16:00:46 +1300
-Subject: [PATCH] Handle realloc failure in the buffer
-
-Ported from http://cgit.freedesktop.org/harfbuzz/commit/?id=a6a79df5fe2e
-by Karl Tomlinson <karlt+@karlt.net>
----
+@@ -, +, @@ 
  pango/opentype/hb-buffer-private.h |    1 +
  pango/opentype/hb-buffer.c         |   70 +++++++++++++++++++++---------------
  pango/opentype/hb-buffer.h         |    2 +-
  3 files changed, 43 insertions(+), 30 deletions(-)
-
-diff --git a/pango/opentype/hb-buffer-private.h b/pango/opentype/hb-buffer-private.h
-index 45cdc4d..f194786 100644
---- a/pango/opentype/hb-buffer-private.h
-+++ b/pango/opentype/hb-buffer-private.h
+--- a/pango/opentype/hb-buffer-private.h	
++++ a/pango/opentype/hb-buffer-private.h	
 @@ -72,6 +72,7 @@ struct _hb_buffer_t {
    unsigned int allocated;
  
@@ -23,10 +13,8 @@ index 45cdc4d..f194786 100644
    unsigned int in_length;
    unsigned int out_length;
    unsigned int in_pos;
-diff --git a/pango/opentype/hb-buffer.c b/pango/opentype/hb-buffer.c
-index 93b51e5..e9788ad 100644
---- a/pango/opentype/hb-buffer.c
-+++ b/pango/opentype/hb-buffer.c
+--- a/pango/opentype/hb-buffer.c	
++++ a/pango/opentype/hb-buffer.c	
 @@ -52,23 +52,21 @@ static hb_buffer_t _hb_buffer_nil = {
   * in_string and out_string.
   */
@@ -169,10 +157,8 @@ index 93b51e5..e9788ad 100644
      buffer->out_string[buffer->out_pos] = buffer->in_string[buffer->in_pos];
    }
    else if (buffer->out_pos != buffer->in_pos)
-diff --git a/pango/opentype/hb-buffer.h b/pango/opentype/hb-buffer.h
-index b030ba9..aaf6694 100644
---- a/pango/opentype/hb-buffer.h
-+++ b/pango/opentype/hb-buffer.h
+--- a/pango/opentype/hb-buffer.h	
++++ a/pango/opentype/hb-buffer.h	
 @@ -94,7 +94,7 @@ hb_buffer_clear (hb_buffer_t *buffer);
  void
  hb_buffer_clear_positions (hb_buffer_t *buffer);
@@ -182,6 +168,3 @@ index b030ba9..aaf6694 100644
  hb_buffer_ensure (hb_buffer_t  *buffer,
  		  unsigned int  size);
  
--- 
-1.7.2.2
-

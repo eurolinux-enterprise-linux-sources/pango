@@ -9,7 +9,7 @@
 Summary: System for layout and rendering of internationalized text
 Name: pango
 Version: 1.28.1
-Release: 7%{?dist}
+Release: 10%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: http://download.gnome.org/sources/pango/1.28/pango-%{version}.tar.bz2
@@ -48,7 +48,6 @@ Patch2: pango-hb_buffer_ensure-realloc.patch
 Patch3: pango-hb_buffer_enlarge-overflow.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=616397
-# https://bugzilla.redhat.com/show_bug.cgi?id=878772
 Patch4: pango-1.28.1-zero-width-ft2.patch
 
 %description
@@ -212,6 +211,7 @@ host=`echo $host | sed "s/^ppc/powerpc/"`
 # autoconf uses ibm-linux not redhat-linux (s390x)
 host=`echo $host | sed "s/^s390\(x\)*-redhat/s390\1-ibm/"`
 
+if [ -d %{_sysconfdir}/pango/$host ]; then
 case "$host" in
   alpha*|ia64*|powerpc64*|s390x*|sparc64*|x86_64*)
    %{_bindir}/pango-querymodules-64 > %{_sysconfdir}/pango/$host/pango.modules || :
@@ -220,6 +220,7 @@ case "$host" in
    %{_bindir}/pango-querymodules-32 > %{_sysconfdir}/pango/$host/pango.modules || :
    ;;
 esac
+fi
 
 fi
 
@@ -230,7 +231,7 @@ fi
 %{_libdir}/libpango*-*.so.*
 %{_bindir}/pango-querymodules*
 %{_bindir}/pango-view
-%{_datadir}/man/man1/pango-view.1.gz
+%{_mandir}/man1/pango-view.1.gz
 %{_libdir}/pango
 %doc %{_mandir}/man1/*
 
@@ -247,9 +248,13 @@ fi
 
 
 %changelog
+* Wed Apr 23 2014 Akira TAGOH <tagoh@redhat.com> - 1.28.1-10
+- Avoid the error message at %%postun on upgrading to rhel7. (#1086690)
+- Use correct rpm macro for man page (#885846)
+
 * Tue Nov 20 2012 Cosimo Cecchi <cosimoc@redhat.com> - 1.28.1-9
 - Fix a regression in the pangoft2 module
-Resolves: #878772
+Resolves: #616397
 
 * Mon Feb 28 2011 Matthias Clasen <mclasen@redhat.com> - 1.28.1-8
 - Prevent an integer overflow in hb_buffer_ensure()

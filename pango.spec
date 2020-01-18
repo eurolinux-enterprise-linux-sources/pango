@@ -9,7 +9,7 @@
 
 Name: pango
 Version: 1.42.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: System for layout and rendering of internationalized text
 
 License: LGPLv2+
@@ -133,9 +133,13 @@ fi
 
 
 %changelog
-* Sun Feb 10 2019 Peng Wu <pwu@redhat.com> - 1.42.4-2
+* Sun Feb 10 2019 Peng Wu <pwu@redhat.com> - 1.42.4-3
 - Fixes crash in pango_fc_font_key_get_variations when key is null
 - Resolves: #1667239
+
+* Tue Dec 18 2018 Peng Wu <pwu@redhat.com> - 1.42.4-2
+- Requires glib2 2.56.1
+- Resolves: #1655751
 
 * Thu Aug 30 2018 Peng Wu <pwu@redhat.com> - 1.42.4-1
 - Update to 1.42.4

@@ -1,4 +1,4 @@
-%global glib2_version 2.33.12
+%global glib2_version 2.56.1
 %global freetype_version 2.1.5
 %global fontconfig_version 2.11.91
 %global cairo_version 1.12.10
@@ -9,12 +9,13 @@
 
 Name: pango
 Version: 1.42.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: System for layout and rendering of internationalized text
 
 License: LGPLv2+
 URL: http://www.pango.org
 Source0: http://download.gnome.org/sources/%{name}/1.42/%{name}-%{version}.tar.xz
+Patch0: pango-fixes-get-variations-crash.patch
 
 BuildRequires: pkgconfig(cairo) >= %{cairo_version}
 BuildRequires: pkgconfig(freetype2) >= %{freetype_version}
@@ -75,6 +76,7 @@ the functionality of the installed %{name} package.
 
 %prep
 %setup -q -n pango-%{version}
+%patch0 -p1 -b .crash
 
 
 %build
@@ -131,6 +133,10 @@ fi
 
 
 %changelog
+* Sun Feb 10 2019 Peng Wu <pwu@redhat.com> - 1.42.4-2
+- Fixes crash in pango_fc_font_key_get_variations when key is null
+- Resolves: #1667239
+
 * Thu Aug 30 2018 Peng Wu <pwu@redhat.com> - 1.42.4-1
 - Update to 1.42.4
 - Security fix for CVE-2018-15120

@@ -9,13 +9,14 @@
 
 Name: pango
 Version: 1.42.4
-Release: 3%{?dist}
+Release: 4%{?dist}
 Summary: System for layout and rendering of internationalized text
 
 License: LGPLv2+
 URL: http://www.pango.org
 Source0: http://download.gnome.org/sources/%{name}/1.42/%{name}-%{version}.tar.xz
 Patch0: pango-fixes-get-variations-crash.patch
+Patch1: pango-fixes-bidi-crash.patch
 
 BuildRequires: pkgconfig(cairo) >= %{cairo_version}
 BuildRequires: pkgconfig(freetype2) >= %{freetype_version}
@@ -77,6 +78,7 @@ the functionality of the installed %{name} package.
 %prep
 %setup -q -n pango-%{version}
 %patch0 -p1 -b .crash
+%patch1 -p1 -b .bidi
 
 
 %build
@@ -133,6 +135,11 @@ fi
 
 
 %changelog
+* Thu Aug 22 2019 Peng Wu <pwu@redhat.com> - 1.42.4-4
+- Fixes bidi crash
+- Security fix for CVE-2019-1010238
+- Resolves: #1738459
+
 * Sun Feb 10 2019 Peng Wu <pwu@redhat.com> - 1.42.4-3
 - Fixes crash in pango_fc_font_key_get_variations when key is null
 - Resolves: #1667239
